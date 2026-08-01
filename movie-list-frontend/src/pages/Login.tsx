@@ -1,24 +1,37 @@
 import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
+import { useAuth } from "../context/AuthContext";
+
+interface LaravelErrorResponse {
+  message?: string;
+}
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setError("");
-
-    setTimeout(() => {
+    try {
+      await login({ email, password });
+      navigate("/");
+    } catch (err) {
+      const axiosErr = err as AxiosError<LaravelErrorResponse>;
+      setError(axiosErr.response?.data?.message || "Invalid email or password.");
+    } finally {
       setSubmitting(false);
-    }, 800);
+    }
   }
 
   return (
     <div className="min-h-screen bg-th-black flex">
-      {/* Left - Form (40%) */}
       <div className="w-full lg:w-[40%] flex items-center justify-center p-8 lg:p-12 border-r border-th-border/20">
         <div className="w-full max-w-sm">
           <h1 className="font-display text-3xl text-th-accent mb-2 tracking-wide">
@@ -65,15 +78,14 @@ export default function Login() {
 
             <p className="text-sm text-th-lgray text-center mt-2">
               No account?{" "}
-              <a href="/register" className="text-th-accent hover:underline">
+              <Link to="/register" className="text-th-accent hover:underline">
                 Register
-              </a>
+              </Link>
             </p>
           </form>
         </div>
       </div>
 
-      {/* Right - About (60%) */}
       <div className="hidden lg:flex w-[60%] relative items-center justify-center p-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-th-accent/10 via-transparent to-th-black" />
         <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-th-accent/10 rounded-full blur-3xl" />

@@ -1,4 +1,7 @@
 import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
+import { useAuth } from "../context/AuthContext";
 
 interface RegisterForm {
   name: string;
@@ -7,7 +10,14 @@ interface RegisterForm {
   password_confirmation: string;
 }
 
+interface LaravelErrorResponse {
+  message?: string;
+  errors?: Record<string, string[]>;
+}
+
 export default function Register() {
+  const { register } = useAuth();
+  const navigate = useNavigate();
   const [form, setForm] = useState<RegisterForm>({
     name: "",
     email: "",
@@ -22,19 +32,27 @@ export default function Register() {
       setForm({ ...form, [field]: e.target.value });
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setError("");
-
-    setTimeout(() => {
+    try {
+      await register(form);
+      navigate("/");
+    } catch (err) {
+      const axiosErr = err as AxiosError<LaravelErrorResponse>;
+      const errors = axiosErr.response?.data?.errors;
+      const message = errors
+        ? Object.values(errors).flat().join(" ")
+        : axiosErr.response?.data?.message || "Couldn't create your account.";
+      setError(message);
+    } finally {
       setSubmitting(false);
-    }, 800);
+    }
   }
 
   return (
     <div className="min-h-screen bg-th-black flex">
-      {/* Left - Form (40%) */}
       <div className="w-full lg:w-[40%] flex items-center justify-center p-8 lg:p-12 border-r border-th-border/20">
         <div className="w-full max-w-sm">
           <h1 className="font-display text-3xl text-th-accent mb-2 tracking-wide">
@@ -107,15 +125,14 @@ export default function Register() {
 
             <p className="text-sm text-th-descrip text-center mt-2">
               Already have an account?{" "}
-              <a href="/login" className="text-th-accent hover:underline">
+              <Link to="/login" className="text-th-accent hover:underline">
                 Log in
-              </a>
+              </Link>
             </p>
           </form>
         </div>
       </div>
 
-      {/* Right - About (60%) */}
       <div className="hidden lg:flex w-[60%] relative items-center justify-center p-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-th-accent/10 via-transparent to-th-black" />
         <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-th-accent/10 rounded-full blur-3xl" />
