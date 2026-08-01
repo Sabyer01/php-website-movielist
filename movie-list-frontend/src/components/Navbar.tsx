@@ -7,7 +7,7 @@ export default function Navbar() {
     <header className="border-b border-th-border/20 bg-th-black">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <h1 className="font-display text-2xl tracking-wide text-th-accent">
-          REELIST
+          MovieDex
         </h1>
 
         <div className="flex items-center gap-4 text-sm text-th-descrip">
