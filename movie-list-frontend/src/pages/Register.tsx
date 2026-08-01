@@ -56,7 +56,7 @@ export default function Register() {
       <div className="w-full lg:w-[40%] flex items-center justify-center p-8 lg:p-12 border-r border-th-border/20">
         <div className="w-full max-w-sm">
           <h1 className="font-display text-3xl text-th-accent mb-2 tracking-wide">
-            REELIST
+            MovieDex
           </h1>
           <p className="text-th-owhite/90 text-sm mb-8">
             Create your account and start tracking.
@@ -137,20 +137,20 @@ export default function Register() {
         <div className="absolute inset-0 bg-gradient-to-br from-th-accent/10 via-transparent to-th-black" />
         <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-th-accent/10 rounded-full blur-3xl" />
 
-        <div className="relative z-10 max-w-lg">
+        <div className="relative z-10 max-w-3xl">
           <p className="text-th-accent text-sm font-medium tracking-widest uppercase mb-4">
-            Your personal cinema
+            Your personal tracker
           </p>
           <h2 className="text-4xl xl:text-5xl font-display text-th-white leading-tight mb-6">
             Track what you watch.<br />
             Discover what to watch next.
           </h2>
-          <p className="text-th-descrip text-lg leading-relaxed mb-10">
-            Reelist helps you build your movie & series lists, rate what you’ve seen,
+          <p className="text-th-lgray/80 text-lg leading-relaxed mb-10">
+            MovieDex helps you build your movie & series lists, rate what you’ve seen,
             and get recommendations based on your taste.
           </p>
 
-          <div className="flex gap-8 text-sm text-th-descrip">
+          <div className="flex gap-8 text-sm text-th-lgray/80">
             <div>
               <p className="text-th-white text-2xl font-medium mb-1">10k+</p>
               <p>Movies tracked</p>
