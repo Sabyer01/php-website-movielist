@@ -121,6 +121,14 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
           {/* Buttons – stack full-width on mobile, side-by-side on sm+ */}
           <div className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
             <button
+              type="submit"
+              disabled={saving}
+              className="w-full sm:flex-1 px-4 py-2.5 sm:py-2 rounded-sm bg-th-accent text-th-black font-medium hover:brightness-110 disabled:opacity-60 transition-all"
+            >
+              {saving ? "Saving…" : "Save changes"}
+            </button>
+            
+            <button
               type="button"
               onClick={onClose}
               className="w-full sm:flex-1 px-4 py-2.5 sm:py-2 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
@@ -128,13 +136,7 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
               Cancel
             </button>
 
-            <button
-              type="submit"
-              disabled={saving}
-              className="w-full sm:flex-1 px-4 py-2.5 sm:py-2 rounded-sm bg-th-accent text-th-black font-medium hover:brightness-110 disabled:opacity-60 transition-all"
-            >
-              {saving ? "Saving…" : "Save changes"}
-            </button>
+            
           </div>
         </form>
       </div>
