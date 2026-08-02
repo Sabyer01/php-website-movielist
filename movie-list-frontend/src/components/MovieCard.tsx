@@ -1,3 +1,4 @@
+// MovieCard.tsx
 import type { Movie, MovieStatus } from "../types";
 
 const STATUS_STYLES: Record<MovieStatus, string> = {
@@ -105,38 +106,35 @@ export default function MovieCard({
           </p>
         )}
 
-        <div className="mt-auto flex items-center justify-between pt-1">
-        <div className="flex gap-2">
-          <button
-            onClick={() => onToggleStatus(movie)}
-            className={`text-sm px-3 py-1.5 rounded-sm border transition-colors duration-300 ${
-              isWatched
-                ? "border-th-owhite text-th-owhite hover:bg-th-owhite hover:text-th-black"
-                : "border-th-accent text-th-accent hover:bg-th-accent hover:text-th-black"
-            }`}
-          >
-            Mark as {isWatched ? "Pending" : "Watched"}
-          </button>
+        {/* Actions – stack on mobile, row on sm+ */}
+        <div className="mt-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-1">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <button
+              onClick={() => onToggleStatus(movie)}
+              className={`w-full sm:w-auto text-sm px-3 py-2 sm:py-1.5 rounded-sm border transition-colors duration-300 ${
+                isWatched
+                  ? "border-th-owhite text-th-owhite hover:bg-th-owhite hover:text-th-black"
+                  : "border-th-accent text-th-accent hover:bg-th-accent hover:text-th-black"
+              }`}
+            >
+              Mark as {isWatched ? "Pending" : "Watched"}
+            </button>
+
+            <button
+              onClick={() => onDelete(movie)}
+              className="w-full sm:w-auto text-sm px-3 py-2 sm:py-1.5 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
+            >
+              Remove
+            </button>
+          </div>
 
           <button
-          onClick={() => onDelete(movie)}
-          className="text-sm px-3 py-1.5 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
-        >
-          Remove
-        </button>
-
-          
-        </div>
-        <button
             onClick={() => onEdit(movie)}
-            className="text-sm px-3 py-1.5 rounded-sm border border-th-border/50 text-th-owhite hover:border-th-accent hover:text-th-black hover:bg-th-accent transition-colors duration-300"
+            className="w-full sm:w-auto text-sm px-3 py-2 sm:py-1.5 rounded-sm border border-th-border/50 text-th-owhite hover:border-th-accent hover:text-th-black hover:bg-th-accent transition-colors duration-300"
           >
             Edit
           </button>
-        
-      </div>
-
-
+        </div>
       </div>
     </div>
   );

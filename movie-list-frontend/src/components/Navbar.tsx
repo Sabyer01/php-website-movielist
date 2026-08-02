@@ -14,7 +14,7 @@ export default function Navbar() {
           <span className="text-th-owhite/90">Hi, {user?.name}</span>
           <button
             onClick={logout}
-            className="px-3 py-1.5 rounded-sm border border-th-border/30 text-th-owhite hover:border-th-accent hover:text-th-accent transition-colors"
+            className="px-3 py-1.5 rounded-sm border border-th-border/30 text-th-owhite bg-th-black hover:border-th-accent hover:text-th-black hover:bg-th-accent transition-colors duration-300"
           >
             Log out
           </button>

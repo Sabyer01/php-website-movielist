@@ -50,13 +50,12 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-      <div className="w-full max-w-md rounded-sm border border-th-border/30 bg-th-header shadow-xl">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-th-border/20">
+      <div className="w-full max-w-md rounded-sm border border-th-border/30 bg-th-header shadow-xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-th-border/20">
           <h2 className="font-display text-lg text-th-white">Edit movie</h2>
-
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-5 flex flex-col gap-4">
           {error && <p className="text-sm text-red-400">{error}</p>}
 
           {/* Read-only title + year */}
@@ -72,7 +71,7 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as MovieStatus)}
-              className="w-full px-2 py-2 rounded-sm bg-th-black border border-th-border/30 text-th-white focus:outline-none focus:border-th-accent"
+              className="w-full px-2 py-2.5 rounded-sm bg-th-black border border-th-border/30 text-th-white focus:outline-none focus:border-th-accent"
             >
               <option value="pending">Pending</option>
               <option value="watched">Watched</option>
@@ -81,13 +80,13 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
 
           <div>
             <label className="block text-sm text-th-owhite/80 mb-1">Rating (1–5)</label>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
                   type="button"
                   onClick={() => setRating(rating === n ? "" : n)}
-                  className={`w-9 h-9 rounded-sm border text-sm transition-colors ${
+                  className={`w-10 h-10 sm:w-9 sm:h-9 rounded-sm border text-sm transition-colors ${
                     rating === n
                       ? "bg-th-accent text-th-black border-th-accent"
                       : "border-th-border/40 text-th-owhite hover:border-th-accent/60"
@@ -115,27 +114,27 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
               placeholder="Optional notes…"
-              className="w-full px-3 py-2 rounded-sm bg-th-black border border-th-border/30 text-th-white placeholder:text-th-descrip focus:outline-none focus:border-th-accent resize-none"
+              className="w-full px-3 py-2.5 rounded-sm bg-th-black border border-th-border/30 text-th-white placeholder:text-th-descrip focus:outline-none focus:border-th-accent resize-none"
             />
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 px-4 py-2 rounded-sm bg-th-accent text-th-black font-medium hover:brightness-110 disabled:opacity-60 transition-all"
-            >
-              {saving ? "Saving…" : "Save changes"}
-            </button>
-
+          {/* Buttons – stack full-width on mobile, side-by-side on sm+ */}
+          <div className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
+              className="w-full sm:flex-1 px-4 py-2.5 sm:py-2 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
             >
               Cancel
             </button>
-            
+
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full sm:flex-1 px-4 py-2.5 sm:py-2 rounded-sm bg-th-accent text-th-black font-medium hover:brightness-110 disabled:opacity-60 transition-all"
+            >
+              {saving ? "Saving…" : "Save changes"}
+            </button>
           </div>
         </form>
       </div>
