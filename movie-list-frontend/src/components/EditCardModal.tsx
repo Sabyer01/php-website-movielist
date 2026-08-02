@@ -49,8 +49,8 @@ export default function EditCardModal({ movie, onClose, onSubmit }: EditCardModa
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-      <div className="w-full max-w-md rounded-sm border border-th-border/30 bg-th-header shadow-xl max-h-[90vh] overflow-y-auto">
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-th-black/50 backdrop-blur-sm">
+    <div className="w-full max-w-md rounded-sm border border-th-border/30 bg-th-header shadow-xl shadow-th-black/50 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-4 sm:px-5 py-4 border-b border-th-border/20">
           <h2 className="font-display text-lg text-th-white">Edit movie</h2>
         </div>
