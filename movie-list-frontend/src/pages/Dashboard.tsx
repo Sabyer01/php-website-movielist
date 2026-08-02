@@ -3,6 +3,7 @@ import api from "../lib/axios";
 import Navbar from "../components/Navbar";
 import MovieCard from "../components/MovieCard";
 import MovieFormModal from "../components/MovieFormModal";
+import EditCardModal from "../components/EditCardModal";
 import type { Movie, NewMoviePayload } from "../types";
 
 type Filter = "all" | "watched" | "pending";
@@ -12,6 +13,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
 
   useEffect(() => {
@@ -48,6 +50,8 @@ export default function Dashboard() {
         status: newStatus,
         rating: movie.rating ?? null,
         notes: movie.notes ?? null,
+        tmdb_id: movie.tmdb_id,
+        poster_path: movie.poster_path,
       });
     } catch {
       setMovies((prev) =>
@@ -66,6 +70,22 @@ export default function Dashboard() {
       setMovies(prevMovies);
       setError("Couldn't remove that movie.");
     }
+  }
+
+  async function handleEditMovie(
+    id: number,
+    payload: {
+      title: string;
+      release_year: number;
+      status: Movie["status"];
+      rating: number | null;
+      notes: string | null;
+      tmdb_id: number;
+      poster_path: string | null;
+    }
+  ) {
+    const res = await api.put<Movie>(`/movies/${id}`, payload);
+    setMovies((prev) => prev.map((m) => (m.id === id ? res.data : m)));
   }
 
   const filteredMovies = movies.filter((m) =>
@@ -122,6 +142,7 @@ export default function Dashboard() {
                 movie={movie}
                 onToggleStatus={handleToggleStatus}
                 onDelete={handleDelete}
+                onEdit={setEditingMovie}
               />
             ))}
           </div>
@@ -132,6 +153,14 @@ export default function Dashboard() {
         <MovieFormModal
           onClose={() => setShowModal(false)}
           onSubmit={handleAddMovie}
+        />
+      )}
+
+      {editingMovie && (
+        <EditCardModal
+          movie={editingMovie}
+          onClose={() => setEditingMovie(null)}
+          onSubmit={handleEditMovie}
         />
       )}
     </div>

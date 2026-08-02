@@ -23,6 +23,8 @@ export default function MovieFormModal({
 
   const [selected, setSelected] = useState<TmdbSearchResult | null>(null);
   const [status, setStatus] = useState<MovieStatus>("pending");
+  const [rating, setRating] = useState<number | "">("");
+  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -66,6 +68,8 @@ export default function MovieFormModal({
         title: selected.title,
         release_year: selected.release_year ?? new Date().getFullYear(),
         status,
+        rating: rating === "" ? null : Number(rating),
+        notes: notes.trim() || null,
         tmdb_id: selected.tmdb_id,
         poster_path: selected.poster_path,
       });
@@ -101,7 +105,6 @@ export default function MovieFormModal({
               />
             </div>
 
-            {/* Fixed height so modal size stays consistent */}
             <div className="h-80 overflow-y-auto rounded-sm border border-th-border/10 bg-th-black/70 p-3">
               {searching && (
                 <div className="h-full flex items-center justify-center">
@@ -215,6 +218,50 @@ export default function MovieFormModal({
               </select>
             </div>
 
+            <div>
+              <label className="block text-sm text-th-owhite/80 mb-1.5">
+                Rating (1–5)
+              </label>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setRating(rating === n ? "" : n)}
+                    className={`w-9 h-9 rounded-sm border text-sm transition-colors ${
+                      rating === n
+                        ? "bg-th-accent text-th-black border-th-accent"
+                        : "border-th-border/40 text-th-owhite hover:border-th-accent/60"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+                {rating !== "" && (
+                  <button
+                    type="button"
+                    onClick={() => setRating("")}
+                    className="text-xs text-th-owhite/60 hover:text-th-owhite self-center ml-1"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm text-th-owhite/80 mb-1.5">
+                Notes
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={3}
+                placeholder="Optional notes…"
+                className="w-full rounded-sm border border-th-border/25 bg-th-black px-4 py-2.5 text-th-white placeholder:text-th-descrip focus:outline-none focus:border-th-accent focus:ring-1 focus:ring-th-accent/30 transition-colors resize-none"
+              />
+            </div>
+
             {error && <p className="text-sm text-red-400">{error}</p>}
 
             <div className="flex justify-end gap-2 pt-1">
@@ -225,7 +272,7 @@ export default function MovieFormModal({
               >
                 {submitting ? "Saving…" : "Save movie"}
               </button>
-              
+
               <button
                 type="button"
                 onClick={onClose}
@@ -233,7 +280,6 @@ export default function MovieFormModal({
               >
                 Cancel
               </button>
-              
             </div>
           </form>
         )}

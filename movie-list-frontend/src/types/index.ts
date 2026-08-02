@@ -18,7 +18,7 @@ export interface Movie {
   status: MovieStatus;
   rating?: number | null;
   notes?: string | null;
-  tmdb_id?: number | null;
+  tmdb_id?: number;
   poster_path?: string | null;
 }
 
@@ -26,7 +26,9 @@ export interface NewMoviePayload {
   title: string;
   release_year: number;
   status: MovieStatus;
-  tmdb_id?: number | null;
+  rating?: number | null;
+  notes?: string | null;
+  tmdb_id: number;
   poster_path?: string | null;
 }
 
@@ -36,3 +38,13 @@ export interface TmdbSearchResult {
   release_year: number | null;
   poster_path: string | null;
 }
+
+export type UpdateMoviePayload = {
+  title: string;
+  release_year: number;
+  status: MovieStatus;
+  rating: number | null;
+  notes: string | null;
+  tmdb_id: number;
+  poster_path: string | null;
+};

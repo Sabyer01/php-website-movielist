@@ -22,16 +22,31 @@ function CheckIcon() {
   );
 }
 
+function StarIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={`w-3.5 h-3.5 ${filled ? "text-th-accent fill-th-accent" : "text-th-owhite/30 fill-none"}`}
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  );
+}
+
 interface MovieCardProps {
   movie: Movie;
   onToggleStatus: (movie: Movie) => void;
   onDelete: (movie: Movie) => void;
+  onEdit: (movie: Movie) => void;
 }
 
 export default function MovieCard({
   movie,
   onToggleStatus,
   onDelete,
+  onEdit,
 }: MovieCardProps) {
   const isWatched = movie.status === "watched";
 
@@ -73,7 +88,25 @@ export default function MovieCard({
           )}
         </div>
 
-        <div className="mt-auto flex items-center gap-2 pt-1">
+        {/* Rating */}
+        {movie.rating != null && (
+          <div className="flex items-center gap-0.5">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <StarIcon key={n} filled={n <= movie.rating!} />
+            ))}
+            <span className="ml-1.5 text-xs text-th-owhite/60">{movie.rating}/5</span>
+          </div>
+        )}
+
+        {/* Notes */}
+        {movie.notes && (
+          <p className="text-sm text-th-owhite/70 line-clamp-2 leading-relaxed">
+            {movie.notes}
+          </p>
+        )}
+
+        <div className="mt-auto flex items-center justify-between pt-1">
+        <div className="flex gap-2">
           <button
             onClick={() => onToggleStatus(movie)}
             className={`text-sm px-3 py-1.5 rounded-sm border transition-colors duration-300 ${
@@ -84,13 +117,26 @@ export default function MovieCard({
           >
             Mark as {isWatched ? "Pending" : "Watched"}
           </button>
+
           <button
-            onClick={() => onDelete(movie)}
-            className="text-sm px-3 py-1.5 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
-          >
-            Remove
-          </button>
+          onClick={() => onDelete(movie)}
+          className="text-sm px-3 py-1.5 rounded-sm border border-red-400 text-red-400 hover:bg-red-400 hover:text-th-black transition-colors duration-300"
+        >
+          Remove
+        </button>
+
+          
         </div>
+        <button
+            onClick={() => onEdit(movie)}
+            className="text-sm px-3 py-1.5 rounded-sm border border-th-border/50 text-th-owhite hover:border-th-accent hover:text-th-black hover:bg-th-accent transition-colors duration-300"
+          >
+            Edit
+          </button>
+        
+      </div>
+
+
       </div>
     </div>
   );

@@ -15,21 +15,33 @@ class MovieController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'release_year' => 'required|integer',
-            'status' => 'required|in:pending,watched',
-            'rating' => 'nullable|integer|min:1|max:5',
-            'notes' => 'nullable|string',
-            'tmdb_id' => 'nullable|integer',
-            'poster_path' => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'release_year' => 'required|integer',
+        'status' => 'required|in:pending,watched',
+        'rating' => 'nullable|integer|min:1|max:5',
+        'notes' => 'nullable|string',
+        'tmdb_id' => 'required|integer',
+        'poster_path' => 'nullable|string',
+    ]);
 
-        $movie = $request->user()->movies()->create($validated);
+    $movie = $request->user()->movies()->firstOrCreate(
+        [
+            'tmdb_id' => $validated['tmdb_id'],
+        ],
+        $validated
+    );
 
-        return response()->json($movie, 201);
+    if (!$movie->wasRecentlyCreated) {
+        return response()->json([
+            'message' => 'Movie already exists in your list.',
+            'movie' => $movie,
+        ], 409);
     }
+
+    return response()->json($movie, 201);
+}
 
     public function show(Request $request, string $id)
     {
@@ -48,7 +60,7 @@ class MovieController extends Controller
             'status' => 'required|in:pending,watched',
             'rating' => 'nullable|integer|min:1|max:5',
             'notes' => 'nullable|string',
-            'tmdb_id' => 'nullable|integer',
+            'tmdb_id' => 'required|integer',
             'poster_path' => 'nullable|string',
         ]);
 
